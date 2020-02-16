@@ -1,13 +1,22 @@
 #include <SoftwareSerial.h>
+#include <TFT.h>  // Arduino LCD library
+#include <SPI.h>
+
+// pin definition for the Uno
+#define cs   10
+#define dc   9
+#define rst  8  
  
 int bluetoothTx = 2;  // TX-O pin of bluetooth mate, Arduino D2
 int bluetoothRx = 3;  // RX-I pin of bluetooth mate, Arduino D3
- 
-int led = 13;
+int i=0,j=20,m=0;
 
-int dataFromBt;
+String dataFromBt;
  
-boolean lightBlink = false;
+TFT TFTscreen = TFT(cs, dc, rst);
+
+// char array to print to the screen
+char sensorPrintout[100];
  
 SoftwareSerial bluetooth(bluetoothTx, bluetoothRx);
  
@@ -23,7 +32,22 @@ void setup()
   bluetooth.println("U,9600,N");  // Temporarily Change the baudrate to 9600, no parity
   // 115200 can be too fast at times for NewSoftSerial to relay the data reliably
   bluetooth.begin(9600);  // Start bluetooth serial at 9600
-  pinMode(led, OUTPUT);
+
+  
+  TFTscreen.begin();
+
+  // clear the screen with a black background
+  TFTscreen.background(0, 0, 0);
+  
+  // write the static text to the screen
+  // set the font color to white
+  TFTscreen.stroke(0,204,0);
+  // set the font size
+  TFTscreen.setTextSize(2);
+  // write the text to the top left corner of the screen
+  TFTscreen.text("BT value :\n ",0,0);
+  // ste the font size very large for the loop
+  TFTscreen.setTextSize(2);
 }
  
 void loop()
@@ -32,28 +56,25 @@ void loop()
   if (bluetooth.available()) // If the bluetooth sent any characters
   {
     // Send any characters the bluetooth prints to the serial monitor
- 
-    //Serial.println((char)bluetooth.read());
-    dataFromBt = bluetooth.read();
- 
-    Serial.println(dataFromBt);
-    if (dataFromBt == '1') {
-      Serial.println("led on");
-      digitalWrite(led, HIGH);
-      //bluetooth.print("1");
+    sensorPrintout[m] = char(bluetooth.read());
+    //sensorVal.toCharArray(sensorPrintout, 20);
+    Serial.print(sensorPrintout);
+    TFTscreen.stroke(255,20,147);
+    // print the sensor value
+    TFTscreen.text(sensorPrintout, i, j);
+    i = i+13;
+    Serial.print(i);
+    if(i >= 156){
+      j = j+20;
+      i = 0;
     }
-    if (dataFromBt == '0') {
-      Serial.println("led off");
-      digitalWrite(led, LOW);
-      //bluetooth.print("0");
-    }
-    if (dataFromBt == 'b') {
-      Serial.println("a");
-      lightBlink = true;
-    } else {
-      lightBlink = false;
-    }
- 
+
+    // wait for a moment
+    delay(250);
+    // erase the text you just wrote
+    //TFTscreen.stroke(0,0,0);
+    //TFTscreen.text(sensorPrintout, j, i);
+   
   }
  
   if (Serial.available()) // If stuff was typed in the serial monitor
@@ -72,15 +93,4 @@ void loop()
  
   }
  
-  // and loop forever and ever!
-  if (lightBlink) {
-    digitalWrite(led, HIGH);
-    bluetooth.print("1");
-    Serial.println("HIGH");
-    delay(500);
-    digitalWrite(led, LOW);
-    bluetooth.print("0");
-    Serial.println("LOW");
-    delay(500);
-  }
 }
