@@ -32,7 +32,7 @@ void setup()
   bluetooth.println("U,9600,N");  // Temporarily Change the baudrate to 9600, no parity
   // 115200 can be too fast at times for NewSoftSerial to relay the data reliably
   bluetooth.begin(9600);  // Start bluetooth serial at 9600
-
+  pinMode(8, OUTPUT);
   
   TFTscreen.begin();
 
@@ -41,7 +41,20 @@ void setup()
   
   // write the static text to the screen
   // set the font color to white
-  TFTscreen.stroke(0,204,0);
+  TFTscreen.stroke(0,255,0);
+  // set the font size
+  TFTscreen.setTextSize(7);
+  // write the text to the top left corner of the screen
+  TFTscreen.text("COBO\n ",0,25);
+  
+  TFTscreen.stroke(255,255,0);
+  
+  TFTscreen.setTextSize(1);
+  // write the text to the top left corner of the screen
+  TFTscreen.text("Circuit Of Bionic Organism",0,80);
+  delay(5000);
+  TFTscreen.background(0, 0, 0);
+  TFTscreen.stroke(0,255,0);
   // set the font size
   TFTscreen.setTextSize(2);
   // write the text to the top left corner of the screen
@@ -68,9 +81,15 @@ void loop()
       j = j+20;
       i = 0;
     }
-
+    if(j>=120){
+      TFTscreen.stroke(0,0,0);
+      TFTscreen.text(sensorPrintout, j, i);
+      i=0;
+      j=20;
+    }
+    
     // wait for a moment
-    delay(250);
+    delay(100);
     // erase the text you just wrote
     //TFTscreen.stroke(0,0,0);
     //TFTscreen.text(sensorPrintout, j, i);
