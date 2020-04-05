@@ -34,9 +34,7 @@ Pair your application(in our project -> our web application) to COBO's HM-10 blu
 
 **Be carefull HM-10 is a BLuetooth Low Energy(BLE) module and has 4.0 bluetooth technology.**
 
-After pairing completed, HM-10's led will be *go off*. Now you can send text messages from your application to your arduino nano and external display
-
-with using Bluetooth Low Energy module.
+After pairing completed, HM-10's led will be *go off*. Now you can send text messages from your application to your arduino nano and external display with using Bluetooth Low Energy module.
 
 ## License
 [COBO](https://www.instagram.com/berkay.byndr/)
