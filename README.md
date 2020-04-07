@@ -8,7 +8,8 @@ COBO (circuit of the bionical organism) is a hardware prototype for project *SLA
 
 [Arduino Nano](https://www.direnc.net/arduino-nano-usb-chip-ch340-usb-kablo-dahil) x1:
 
-	Arduino Nano used to control external display and Bluetooth module.Nano preferred over Uno because of the compact design of Nano.
+	Arduino Nano used to control external display and Bluetooth module.
+Nano preferred over Uno because of the compact design of Nano.
 
 [HM-10 Bluetooth Module](https://www.direnc.net/arduino-bluetooth-40-seri-modul) x1:
 
